@@ -40,9 +40,11 @@ letter [_a-zA-Z]
 
     /*Comments*/
 \/\/[^\n]*\n { continue; }
-\/\* { BEGIN COMMENT; }
-<COMMENT>\*\/ { BEGIN INITIAL; }
-<COMMENT>. { continue; }
+<INITIAL>"/*" { BEGIN COMMENT; }
+<COMMENT>"*/" { BEGIN INITIAL; }
+<COMMENT>[^*\n]
+<COMMENT>"*"
+<COMMENT>\n 
 
     /*Operators*/
 ";" { return SEMI; }
