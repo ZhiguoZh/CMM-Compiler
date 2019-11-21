@@ -1,6 +1,7 @@
 #include <stdarg.h>
 
 #include "../inc/prabsyntax.h"
+#include "../inc/symbol.h"
 
 static void print_program(FILE* out, A_program program, int d);
 static void print_extdeflist(FILE* out, A_extdeflist extdeflist, int d);
@@ -131,13 +132,13 @@ static void print_struct_specifier(FILE* out, A_struct_specifier struct_specifie
 static void print_opttag(FILE* out, A_opt_tag opt_tag, int d) {
     if (opt_tag == NULL) return;
     print_with_indent(out, d, "OptTag  (%d)\n", opt_tag->pos);
-    print_with_indent(out, d+2, "ID:  %s\n", opt_tag->id);
+    print_with_indent(out, d+2, "ID:  %s\n", symbol_name(opt_tag->id));
 }
 
 static void print_tag(FILE* out, A_tag tag, int d) {
     if (tag == NULL) return;
     print_with_indent(out, d, "Tag  (%d)\n", tag->pos);
-    print_with_indent(out, d+2, "ID:  %s\n", tag->id);
+    print_with_indent(out, d+2, "ID:  %s\n", symbol_name(tag->id));
 }
 
 static void print_vardec(FILE* out, A_vardec vardec, int d) {
@@ -145,7 +146,7 @@ static void print_vardec(FILE* out, A_vardec vardec, int d) {
     print_with_indent(out, d, "VarDec  (%d)\n", vardec->pos);
     switch(vardec->kind) {
         case A_id_var: {
-            print_with_indent(out, d+2, "ID:  %s\n", vardec->u.id);
+            print_with_indent(out, d+2, "ID:  %s\n", symbol_name(vardec->u.id));
             break;
         }
         case A_arr_var: {
@@ -163,7 +164,7 @@ static void print_vardec(FILE* out, A_vardec vardec, int d) {
 static void print_fundec(FILE* out, A_fundec fundec, int d) {
     if (fundec == NULL) return;
     print_with_indent(out, d, "FunDec  (%d)\n", fundec->pos);
-    print_with_indent(out, d+2, "ID:  %s\n", fundec->name);
+    print_with_indent(out, d+2, "ID:  %s\n", symbol_name(fundec->name));
     print_with_indent(out, d+2, "LP\n");
     print_varlist(out, fundec->varlist, d+2);
     print_with_indent(out, d+2, "RP\n");
@@ -359,7 +360,7 @@ static void print_exp(FILE* out, A_exp exp, int d) {
             }
         }
         case A_call_exp: {
-            print_with_indent(out, d+2, "ID:  %s\n", exp->u.call.fun);
+            print_with_indent(out, d+2, "ID:  %s\n", symbol_name(exp->u.call.fun));
             print_with_indent(out, d+2, "LP\n");
             print_args(out, exp->u.call.args, d+2);
             print_with_indent(out, d+2, "RP\n");
@@ -375,11 +376,11 @@ static void print_exp(FILE* out, A_exp exp, int d) {
         case A_struct_exp: {
             print_exp(out, exp->u.structt.record, d+2);
             print_with_indent(out, d+2, "DOT\n");
-            print_with_indent(out, d+2, "ID:  %s\n", exp->u.structt.field);
+            print_with_indent(out, d+2, "ID:  %s\n", symbol_name(exp->u.structt.field));
             break;
         }
         case A_id_exp: {
-            print_with_indent(out, d+2, "ID:  %s\n", exp->u.id);
+            print_with_indent(out, d+2, "ID:  %s\n", symbol_name(exp->u.id));
             break;
         }
         case A_int_exp: {

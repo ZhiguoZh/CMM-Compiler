@@ -1,7 +1,7 @@
 #ifndef ABSYNTAX_H_
 #define ABSYNTAX_H_
 
-#include <stdlib.h>
+#include "symbol.h"
 
 typedef struct A_program_* A_program;
 typedef struct A_extdeflist_* A_extdeflist;
@@ -24,7 +24,7 @@ typedef struct A_dec_* A_dec;
 typedef struct A_vardec_* A_vardec;
 typedef struct A_exp_* A_exp;
 typedef struct A_args_* A_args;
-typedef char* A_id;
+typedef Symbol A_id;
 typedef enum {A_int_type, A_float_type} A_type;
 typedef int A_pos;
 

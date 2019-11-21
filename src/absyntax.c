@@ -1,17 +1,9 @@
 #include "../inc/absyntax.h"
+#include "../inc/util.h"
 
-#include <stdio.h>
+#include <stddef.h>
 
 A_program program_root = NULL;
-
-void* check_malloc(int sz) {
-    void* ptr = malloc(sz);
-    if (ptr == NULL) {
-        fprintf(stderr, "Error: Run out of Memory");
-        exit(1);
-    }
-    return ptr;
-}
 
 // A.1.2 High-level definitions.
 A_program A_Program(A_pos pos, A_extdeflist extdeflist) {

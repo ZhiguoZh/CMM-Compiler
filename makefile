@@ -8,7 +8,7 @@ cc=gcc
 CFLAGS=-I$(IDIR) -Wall -g -c -o
 OPTION=-lfl -o
 
-PARSE_OBJECTS=parse-test.o lexical.o syntax.o absyntax.o prabsyntax.o
+PARSE_OBJECTS=parse-test.o lexical.o syntax.o absyntax.o prabsyntax.o symbol.o table.o util.o
 
 LEX_OBJS=$(patsubst %, $(ODIR)/%, $(LEX_OBJECTS))
 

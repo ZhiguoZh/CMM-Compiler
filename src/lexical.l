@@ -6,6 +6,7 @@
     #include <stdlib.h>
     #include <string.h>
     #include "../inc/absyntax.h"
+    #include "../inc/symbol.h"
     #include "syntax.h"
 
     int yycolumn = 1;
@@ -36,7 +37,7 @@ letter [_a-zA-Z]
 "if" { return IF; }
 "else" { return ELSE; }
 "while" { return WHILE; }
-{letter}({letter}|{ddigit}){0,31} { yylval.id = strdup(yytext); return ID; }
+{letter}({letter}|{ddigit}){0,31} { yylval.id = make_symbol(strdup(yytext)); return ID; }
 
     /*Comments*/
 \/\/[^\n]*\n { continue; }
