@@ -8,46 +8,49 @@ struct Binder_ {
     void* key;
     void* value;
     Binder tail;
-    Binder prevtop;
 };
 
 #define TAB_SIZE 127
 
 struct Table_ {
     Binder table[TAB_SIZE];
-    Binder top;
+    Table tail;
 };
 
-Binder make_binder(void* key, void* value, Binder tail, Binder prevtop) {
+Binder make_binder(void* key, void* value, Binder tail) {
     Binder b = check_malloc(sizeof(*b));
     b->key = key;
     b->value = value;
     b->tail = tail;
-    b->prevtop = prevtop;
     return b;
 }
 
-Table init_tab() {
+Table init_tab(Table tail) {
     Table t = check_malloc(sizeof(*t));
-    t->top = NULL;
+    t->tail = tail;
     for (unsigned int i = 0; i < TAB_SIZE; ++i) {
         t->table[i] = NULL;
     }
     return t;
 }
 
-void tab_push(Table t, void* key, void* value) {
-    check(t && key);
-    Binder head = t->table[(unsigned long long)key % TAB_SIZE];
-    Binder b = make_binder(key, value, head, t->top);
-    t->table[(unsigned long long)key % TAB_SIZE] = head;
-    t->top = b;
-}
-
 void* tab_look(Table t, void* key) {
     check(t && key);
     Binder head = t->table[(unsigned long long)key % TAB_SIZE];
-    return head->value;
+    for (/*Intended left empty*/; head; head = head->tail) {
+        if (head->key == key) return head->value;
+    }
+    return NULL;
+}
+
+void tab_insert(Table t, void* key, void* value) {
+    check(t && key);
+    if (tab_look(t, key) != NULL) {
+        CHECK_WITH_MSG()
+    }
+    Binder head = t->table[(unsigned long long)key % TAB_SIZE];
+    Binder b = make_binder(key, value, head);
+    t->table[(unsigned long long)key % TAB_SIZE] = head;
 }
 
 void* tab_pop(Table t) {
